@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	kit "github.com/go-kit/kit/log/logrus"
 	"github.com/grafana/loki-client-go/loki"
 	"github.com/grafana/loki-client-go/pkg/backoff"
 	"github.com/grafana/loki-client-go/pkg/labelutil"
@@ -75,7 +74,7 @@ func main() {
 		},
 		ExternalLabels: labelutil.LabelSet{},
 		Timeout:        time.Second * 10,
-	}, kit.NewLogrusLogger(log))
+	})
 	for {
 		conn, err := server.Accept()
 		if err != nil {
