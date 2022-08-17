@@ -60,6 +60,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println("Listening on", *listen)
+	log.Println("* loki:", *lokiBase)
+	log.Println("* machine time:", *useMachineTime)
 	lokiUrl, _ := url.Parse(fmt.Sprintf("%s/loki/api/v1/push", *lokiBase))
 	client, err = loki.New(loki.Config{
 		URL: urlutil.URLValue{
