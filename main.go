@@ -49,9 +49,13 @@ func parseStream(r io.Reader, callback func(res *syslog.Result)) error {
 	return nil
 }
 
+var (
+	listen         = flag.String("listen", ":1514", "Listen address")
+	lokiBase       = flag.String("loki", "http://localhost:3100", "loki base url")
+	useMachineTime = flag.Bool("machine-time", false, "use machine time instead of message time")
+)
+
 func main() {
-	listen := flag.String("listen", ":1514", "Listen address")
-	lokiBase := flag.String("loki", "http://localhost:3100", "loki base url")
 	flag.Parse()
 	server, err := net.Listen("tcp", *listen)
 	if err != nil {
@@ -151,6 +155,9 @@ func handleMessage(msg *rfc5424.SyslogMessage) {
 	}
 	if msg.Timestamp != nil {
 		t = *msg.Timestamp
+	}
+	if *useMachineTime {
+		t = time.Now()
 	}
 	err := client.Handle(ls, t, message)
 	if err != nil {
