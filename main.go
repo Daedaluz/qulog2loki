@@ -123,7 +123,7 @@ func handleMessage(msg *rfc5424.SyslogMessage) {
 	if msg.Message != nil {
 		message = *msg.Message
 	}
-
+        ls["job"] = "qulog"
 	ls["level"] = model.LabelValue(severityLevels[*msg.Severity])
 	ls["host"] = model.LabelValue(hostname)
 	for id, fields := range *msg.StructuredData {
