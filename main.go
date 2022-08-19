@@ -150,6 +150,9 @@ func handleMessage(msg *rfc5424.SyslogMessage) {
 						message = fmt.Sprintf("user %s logout", fields["user"])
 					}
 				default:
+					if x := model.LabelValue(v); x != "(null)" {
+						ls[model.LabelName(k)] = x
+					}
 					ls[model.LabelName(k)] = model.LabelValue(v)
 				}
 			}
